@@ -12,7 +12,7 @@ export interface IUser extends Document {
 	fullname: string
 	password: string
 	confirmed: boolean
-	confirm_hash?: string
+	confirm_hash: string
 	last_seen: string,
 }
 
@@ -45,7 +45,10 @@ const UserSchema = new Schema(
 			type: Boolean,
 			default: false
 		},
-		confirm_hash: String,
+		confirm_hash: {
+			type: String,
+			require: 'confirm_hash is required'
+		},
 		last_seen: {
 			type: String,
 			default: new Date().toLocaleString()
@@ -61,12 +64,18 @@ UserSchema.pre('save', function (next) {
 
 	if (!user.isModified('password')) return next()
 
-	console.log('user.password: ', user.password);
+
 	generatePasswordHash(user.password)
 		.then(hash => {
 			user.password = String(hash)
-			console.log('hash: ', hash);
-			next()
+			console.log('user.password 1: ', user.password);
+			// generatePasswordHash(String(+new Date()))
+			// 	.then(hashLogin => {
+			// 		user.confirm_hash = String(hashLogin)
+			// 		console.log('user.confirm_hash: 1', user.confirm_hash);
+			// 		next()
+			// 	})
+				next()
 		})
 		.catch(err => {
 			next(err)
@@ -78,7 +87,20 @@ UserSchema.pre('save', function (next) {
 		bcrypt.hash(user.password, salt, function (err, hash) {
 			if (err) return next(err)
 			user.password = hash
-			next()
+			console.log('user.password: 2', user.password);
+		})
+
+
+
+		bcrypt.genSalt(10, function (err, salt) {
+			if (err) return next(err)
+	
+			bcrypt.hash(String(+new Date()), salt, function (err, hash) {
+				if (err) return next(err)
+				user.confirm_hash = hash
+				console.log('user.confirm_hash: 2', user.confirm_hash);
+				next()
+			})
 		})
 	})
 })

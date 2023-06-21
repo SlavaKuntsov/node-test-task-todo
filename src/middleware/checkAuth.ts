@@ -1,15 +1,17 @@
-import { NextFunction, Request, Response } from 'express'
-
 import verifyJWTToken from '../utils/verifyJWTToken'
-import { UserModel } from '../schemas/schemas'
 
 export default (req: any, res: any, next: any) => {
 
-	if(req.path === '/user/login' || req.path === '/user/registration') {
+	if(req.path === '/user/login' || req.path === '/user/registration' || req.path === '/user/verify') {
 		return next()
 	}
 	
 	const token = req.headers.token
+	// console.log('token: ', token);
+
+	if(token === '' || token === null || token === undefined) {
+
+	}
 
 	verifyJWTToken(token)
 		.then((user: any) => {

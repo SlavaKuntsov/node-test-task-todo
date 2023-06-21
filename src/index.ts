@@ -6,7 +6,10 @@ import mongoose from 'mongoose'
 import { CreateRoutes } from './core/core'
 import { CreateSocket } from './core/core'
 
+const cors = require('cors');
+
 const app = express()
+app.use(cors());
 const http = createServer(app)
 const io = CreateSocket(http)
 

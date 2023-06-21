@@ -37,13 +37,19 @@ export default class MessageController {
 		message
 			.save()
 			.then((obj: any) => {
-				this.io.emit('SERVER:NEW_MESSAGE', obj)
+				obj
+					.populate('dialog')
+					.then((message: any )=> {
+						console.log('message: ', message);
+						// this.io.emit('SERVER:NEW_MESSAGE', message)
 				
-				return res.json(obj)
+						return res.json(message)
+					})
+					.catch((reason: any) => {
+						return res.json(reason)
+					})
 			})
-			.catch(reason => {
-				return res.json(reason)
-			})
+			
 	}
 	
 	delete(req: Request, res: Response) {

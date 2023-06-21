@@ -13,7 +13,9 @@
 		var socket = io('http://localhost:3333');
 
 			socket.on('SERVER:NEW_MESSAGE', function (msg) { // принимает
-				console.log('message', msg)
+				if(window.user !== msg.user) {
+					console.log(msg, 'hello')
+				}
 			})
 	</script>
 </body>

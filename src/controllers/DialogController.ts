@@ -16,7 +16,6 @@ export default class DialogController {
 		DialogModel.find({ author: authorId })
 			.populate(["author", "partner"])
 			.then(dialog => {
-				console.log('dialog: ', dialog);
 				return res.json(dialog);
 			}).catch(() => {
 				return res.status(404).json({
