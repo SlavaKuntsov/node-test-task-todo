@@ -1,24 +1,19 @@
 import bodyParser from 'body-parser'
 import { Request, Response } from 'express'
-const socket = require('socket.io')
 
 import { Socket } from 'dgram'
 import {
-	DialogController,
-	MessageController,
-	UserController
+	TaskController, UserController
 } from '../controllers/controller'
-import { checkAuth, updateLastSeen } from '../middleware/middleware'
-import { loginValidation, registerValidation } from '../utils/validations/index'
+import checkAuth from '../middleware/checkAuth'
 
 export default (app: any, io: Socket) => {
 	const User = new UserController(io)
-	const Dialog = new DialogController(io)
-	const Message = new MessageController(io)
+	const Task = new TaskController(io)
+
 
 	app.use(bodyParser.json())
-	app.use(updateLastSeen)
-	app.use(checkAuth)
+	// app.use(checkAuth)
 
 	app.use(function (req: Request, res: Response, next: any) {
 		//Enabling CORS
@@ -32,17 +27,9 @@ export default (app: any, io: Socket) => {
 	})
 
 	app.get('/user/me', User.getMe)
-	app.post('/user/verify', User.verify)
-	app.post('/user/registration', registerValidation, User.createUser)
-	app.post('/user/login', loginValidation, User.login)
-	app.delete('/user/:id', User.delete)
-	app.get('/user/:id', User.show)
+	app.post('/user', User.createUser)
 
-	app.get('/dialogs', Dialog.index)
-	app.delete('/dialogs/:id', Dialog.delete)
-	app.post('/dialogs', Dialog.createDialog)
-
-	app.get('/messages', Message.index)
-	app.delete('/messages/:id', Message.delete)
-	app.post('/messages', Message.createMessage)
+	app.get('/task/show', Task.getAll)
+	app.post('/task/create', Task.createTask)
+	app.delete('/task/delete/:id', Task.deleteTask)
 }

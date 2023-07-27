@@ -5,7 +5,7 @@
 	"main": "index.ts",
 	"scripts": {
 		"start": "nodemon src/index.ts",
-		"kill port": "npx kill-port 3333"
+		"kill port": "npx kill-port 9999"
 	},
 	"author": "",
 	"license": "ISC",
