@@ -5,7 +5,8 @@
 	"main": "index.ts",
 	"type": "module",
 	"scripts": {
-		"start": "nodemon src/index.ts",
+		"start": "ts-node src/index.ts",
+		"dev": "nodemon ts-node --esm src/index.ts",
 		"kill port": "npx kill-port 9999"
 	},
 	"author": "",
