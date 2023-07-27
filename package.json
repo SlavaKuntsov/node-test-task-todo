@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.ts",
+	"type": "module",
 	"scripts": {
 		"start": "nodemon src/index.ts",
 		"kill port": "npx kill-port 9999"
