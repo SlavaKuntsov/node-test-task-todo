@@ -7,6 +7,9 @@
 		"start": "nodemon src/index.ts",
 		"kill port": "npx kill-port 9999"
 	},
+	"engines": {
+		"node": "14.17.0"
+	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
